@@ -1,0 +1,1060 @@
+/* CSS Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 根变量定义 */
+:root {
+    --primary-color: #2196F3;
+    --primary-dark: #1976D2;
+    --secondary-color: #FFC107;
+    --success-color: #4CAF50;
+    --danger-color: #F44336;
+    --warning-color: #FF9800;
+    --info-color: #00BCD4;
+    --light-color: #F5F5F5;
+    --dark-color: #333333;
+    --border-color: #E0E0E0;
+    --shadow: 0 2px 4px rgba(0,0,0,0.1);
+    --shadow-hover: 0 4px 8px rgba(0,0,0,0.15);
+    --border-radius: 8px;
+    --transition: all 0.3s ease;
+}
+
+/* 基础样式 */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: var(--dark-color);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 头部样式 */
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: auto;
+    padding: 0;
+}
+
+header h1 {
+    color: white;
+    font-size: 2.5rem;
+    font-weight: 300;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    text-align: center;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0;
+    line-height: 1.2;
+}
+
+.offline-indicator {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: var(--danger-color);
+    color: white;
+    padding: 5px 10px;
+    border-radius: var(--border-radius);
+    font-size: 0.8rem;
+    opacity: 0;
+    transition: var(--transition);
+    z-index: 10;
+    pointer-events: none;
+}
+
+.offline-indicator.show {
+    opacity: 1;
+}
+
+/* 主内容区域 */
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* 表单样式 */
+.todo-form {
+    display: flex;
+    gap: 10px;
+    background: white;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+#todo-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    transition: var(--transition);
+    outline: none;
+}
+
+#todo-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+}
+
+#add-btn {
+    padding: 12px 24px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    white-space: nowrap;
+}
+
+#add-btn:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-hover);
+}
+
+#add-btn:active {
+    transform: translateY(0);
+}
+
+/* 任务列表容器 */
+.todo-list-container {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 统计信息 */
+.todo-stats {
+    padding: 15px 20px;
+    background: var(--light-color);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    color: var(--dark-color);
+    gap: 15px;
+}
+
+/* 任务列表 */
+.todo-list {
+    list-style: none;
+    flex: 1;
+    overflow-y: auto;
+    max-height: 400px;
+}
+
+.todo-item {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    border-bottom: 1px solid var(--border-color);
+    background: white;
+    transition: var(--transition);
+    animation: slideIn 0.3s ease-out;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 拖拽时禁用过渡效果 */
+.todo-item.dragging-progress {
+    transition: none;
+}
+
+.todo-item.dragging-progress .progress-fill {
+    transition: none;
+}
+
+.todo-item.dragging-progress .progress-text {
+    transition: none;
+}
+
+.todo-item:hover {
+    background: #f8f9fa;
+}
+
+.todo-item.completed {
+    opacity: 0.7;
+    background: #f8f9fa;
+}
+
+.todo-item.removing {
+    animation: slideOut 0.3s ease-out forwards;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOut {
+    to {
+        opacity: 0;
+        transform: translateX(20px);
+        height: 0;
+        padding: 0;
+    }
+}
+
+/* 复选框样式 */
+.todo-checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--success-color);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+/* 移动端任务内容区域 */
+.mobile-task-content {
+    flex: 1;
+    min-width: 0;
+    padding: 8px 0;
+    border-radius: 6px;
+    margin: -8px 0;
+    padding: 8px;
+}
+
+/* 任务内容包装器 */
+.todo-content-wrapper {
+    padding: 15px 20px;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    transition: transform 0.3s ease;
+    position: relative;
+    z-index: 2;
+}
+
+/* 任务头部区域 */
+.task-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* 任务文本与进度容器 */
+.task-text-with-progress {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+.todo-text {
+    font-size: 1rem;
+    transition: var(--transition);
+    line-height: 1.4;
+    font-weight: 500;
+    color: var(--dark-color);
+    min-width: 0;
+    max-width: 65vw;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+/* 内联进度条样式 */
+.inline-progress-bar {
+    height: 20px;
+    background: var(--light-color);
+    border-radius: 10px;
+    position: relative;
+    cursor: pointer;
+    border: 1px solid var(--border-color);
+    overflow: visible;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+    transition: border-color 0.2s ease;
+    pointer-events: auto; /* 确保可以接收事件 */
+}
+
+.inline-progress-bar:hover {
+    border-color: var(--primary-color);
+}
+
+.inline-progress-fill {
+    height: 100%;
+    background: linear-gradient(135deg, var(--success-color) 0%, var(--primary-color) 50%, var(--info-color) 100%);
+    border-radius: 9px;
+    transition: width 0.3s ease;
+    position: relative;
+    min-width: 0;
+    overflow: hidden;
+}
+
+/* 内联进度拖拽手柄 */
+.inline-progress-handle {
+    position: absolute;
+    top: 50%;
+    width: 24px;
+    height: 24px;
+    background: white;
+    border: 3px solid var(--primary-color);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    cursor: grab;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    z-index: 10;
+    min-width: 24px;
+    min-height: 24px;
+    pointer-events: auto;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    display: block;
+    visibility: visible;
+    opacity: 1;
+}
+
+.inline-progress-handle:hover {
+    transform: translate(-50%, -50%) scale(1.15);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.4);
+    border-width: 4px;
+}
+
+.inline-progress-handle.dragging {
+    cursor: grabbing;
+    transform: translate(-50%, -50%) scale(1.25);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+    border-color: var(--primary-dark);
+    border-width: 4px;
+}
+
+.todo-item.completed .todo-text {
+    text-decoration: line-through;
+    color: #888;
+}
+
+/* 移动端已完成任务样式 */
+@media (max-width: 768px) {
+    .todo-item.completed .mobile-task-content {
+        background-color: rgba(76, 175, 80, 0.1);
+        position: relative;
+    }
+    
+    .todo-item.completed .mobile-task-content::before {
+        content: '✓';
+        position: absolute;
+        left: -25px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 20px;
+        background: var(--success-color);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: bold;
+    }
+    
+    .todo-item.completed .todo-content-wrapper {
+        opacity: 0.8;
+    }
+}
+
+/* 进度条容器 */
+.progress-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    margin-top: 3px;
+}
+
+/* 进度条 - 长方体样式 */
+.progress-bar {
+    flex: 1;
+    height: 24px;
+    background: var(--light-color);
+    border-radius: 12px;
+    position: relative;
+    cursor: pointer;
+    border: 2px solid var(--border-color);
+    overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    transition: border-color 0.2s ease;
+}
+
+.progress-bar:hover {
+    border-color: var(--primary-color);
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(135deg, var(--success-color) 0%, var(--primary-color) 50%, var(--info-color) 100%);
+    border-radius: 10px;
+    transition: width 0.3s ease;
+    position: relative;
+    min-width: 0;
+}
+
+/* 进度拖拽手柄 */
+.progress-handle {
+    position: absolute;
+    top: 50%;
+    width: 20px;
+    height: 20px;
+    background: white;
+    border: 3px solid var(--primary-color);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    cursor: grab;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    z-index: 3;
+}
+
+.progress-handle:hover {
+    transform: translate(-50%, -50%) scale(1.15);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+    border-width: 4px;
+}
+
+.progress-handle.dragging {
+    cursor: grabbing;
+    transform: translate(-50%, -50%) scale(1.2);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    border-color: var(--primary-dark);
+    border-width: 4px;
+}
+
+/* 进度百分比文本 */
+.progress-percentage {
+    font-size: 0.85rem;
+    color: var(--primary-color);
+    font-weight: 600;
+    min-width: 40px;
+    text-align: center;
+    background: rgba(33, 150, 243, 0.1);
+    padding: 2px 6px;
+    border-radius: 6px;
+    border: 1px solid rgba(33, 150, 243, 0.2);
+    flex-shrink: 0;
+}
+
+.todo-item.completed .progress-percentage {
+    color: var(--success-color);
+    background: rgba(76, 175, 80, 0.1);
+    border-color: rgba(76, 175, 80, 0.2);
+}
+
+/* 保留原始进度文本样式以防其他地方使用 */
+.progress-text {
+    font-size: 0.9rem;
+    color: var(--primary-color);
+    font-weight: 600;
+    min-width: 40px;
+    text-align: center;
+    background: rgba(33, 150, 243, 0.1);
+    padding: 4px 8px;
+    border-radius: 8px;
+    border: 1px solid rgba(33, 150, 243, 0.2);
+}
+
+.todo-item.completed .progress-text {
+    color: var(--success-color);
+    background: rgba(76, 175, 80, 0.1);
+    border-color: rgba(76, 175, 80, 0.2);
+}
+
+/* 时间戳 */
+.todo-times {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex-shrink: 0;
+    min-width: 80px;
+    text-align: right;
+    margin-left: auto;
+}
+
+.todo-time {
+    font-size: 0.8rem;
+    color: #888;
+    line-height: 1.2;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.todo-time::before {
+    content: attr(data-icon);
+    display: inline-block;
+    width: 16px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.created-time {
+    color: #666;
+}
+
+.created-time::before {
+    content: '📅';
+}
+
+.completed-time {
+    color: var(--success-color);
+    font-weight: 500;
+}
+
+.completed-time::before {
+    content: '✅';
+}
+
+/* 删除按钮 */
+.delete-btn {
+    background: var(--danger-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.delete-btn:hover {
+    background: #d32f2f;
+    transform: scale(1.1);
+}
+
+/* 滑动删除区域 */
+.swipe-delete-area {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 0px;
+    background: var(--danger-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    z-index: 1;
+    transition: opacity 0.3s ease, background-color 0.2s ease, width 0.3s ease;
+}
+
+.swipe-delete-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    border-radius: 0;
+    transition: background 0.2s ease;
+    white-space: nowrap;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.swipe-delete-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* 滑动完成区域 */
+.swipe-complete-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 0px;
+    background: var(--success-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    z-index: 1;
+    transition: opacity 0.3s ease, background-color 0.2s ease, width 0.3s ease;
+}
+
+.swipe-complete-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    border-radius: 0;
+    transition: background 0.2s ease;
+    white-space: nowrap;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.swipe-complete-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* 桌面端隐藏滑动区域 */
+@media (min-width: 769px) {
+    .swipe-delete-area,
+    .swipe-complete-area {
+        display: none;
+    }
+}
+
+/* 移动端隐藏桌面删除按钮和复选框 */
+@media (max-width: 768px) {
+    .desktop-delete {
+        display: none;
+    }
+    
+    .desktop-checkbox {
+        display: none;
+    }
+    
+    .mobile-task-content {
+        margin-left: -8px;
+    }
+    
+    .task-header {
+        gap: 8px;
+    }
+}
+
+/* 空状态 */
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: #888;
+    font-size: 1.1rem;
+}
+
+.empty-state.hidden {
+    display: none;
+}
+
+/* 操作按钮 */
+.actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.btn-secondary, .btn-danger {
+    padding: 10px 20px;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 500;
+}
+
+.btn-secondary {
+    background: var(--secondary-color);
+    color: var(--dark-color);
+}
+
+.btn-secondary:hover {
+    background: #ffb300;
+    transform: translateY(-1px);
+}
+
+.btn-danger {
+    background: var(--danger-color);
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #d32f2f;
+    transform: translateY(-1px);
+}
+
+/* 页脚样式 */
+footer {
+    text-align: center;
+    margin-top: 30px;
+    color: white;
+    font-size: 0.9rem;
+}
+
+.install-prompt {
+    margin-top: 15px;
+}
+
+#install-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    padding: 10px 20px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    backdrop-filter: blur(10px);
+}
+
+#install-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.install-prompt.hidden {
+    display: none;
+}
+
+/* Toast 通知 */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--success-color);
+    color: white;
+    padding: 15px 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-hover);
+    z-index: 1000;
+    transition: var(--transition);
+    opacity: 0;
+}
+
+.toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+    
+    header h1 {
+        font-size: 2rem;
+    }
+    
+    .todo-form {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    #add-btn {
+        align-self: stretch;
+    }
+    
+    .todo-stats {
+        gap: 10px;
+        padding: 12px 15px;
+        font-size: 0.85rem;
+    }
+    
+    .actions {
+        flex-direction: column;
+    }
+    
+    .btn-secondary, .btn-danger {
+        width: 100%;
+    }
+    
+    .todo-item {
+        gap: 8px;
+    }
+    
+    .todo-content-wrapper {
+        padding: 12px 15px;
+        gap: 8px;
+    }
+    
+    .task-header {
+        gap: 10px;
+    }
+    
+    .todo-text {
+        font-size: 0.95rem;
+        max-width: 60vw;
+    }
+    
+    .task-text-with-progress {
+        gap: 6px;
+    }
+    
+    .inline-progress-bar {
+        height: 18px;
+        border-radius: 9px;
+    }
+    
+    .inline-progress-handle {
+        width: 20px;
+        height: 20px;
+        border-width: 3px;
+        min-width: 20px;
+        min-height: 20px;
+    }
+    
+    .progress-percentage {
+        font-size: 0.8rem;
+        min-width: 36px;
+        padding: 1px 5px;
+    }
+    
+    .progress-bar {
+        height: 22px;
+        border-radius: 11px;
+    }
+    
+    .progress-handle {
+        width: 18px;
+        height: 18px;
+    }
+    
+    .progress-text {
+        font-size: 0.85rem;
+        min-width: 36px;
+        padding: 3px 6px;
+    }
+    
+    .todo-times {
+        min-width: 70px;
+    }
+    
+    .todo-time {
+        font-size: 0.75rem;
+    }
+    
+    .delete-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 10px;
+    }
+    
+    header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .todo-form {
+        padding: 15px;
+    }
+    
+    .todo-stats {
+        gap: 8px;
+        padding: 10px 12px;
+        font-size: 0.8rem;
+    }
+    
+    .todo-item {
+        gap: 6px;
+    }
+    
+    .todo-content-wrapper {
+        padding: 10px 12px;
+        gap: 6px;
+    }
+    
+    .task-header {
+        gap: 8px;
+    }
+    
+    .todo-checkbox {
+        width: 16px;
+        height: 16px;
+    }
+    
+    .todo-text {
+        font-size: 0.9rem;
+        line-height: 1.3;
+        max-width: 55vw;
+    }
+    
+    .task-text-with-progress {
+        gap: 5px;
+    }
+    
+    .inline-progress-bar {
+        height: 16px;
+        border-radius: 8px;
+        border-width: 1px;
+    }
+    
+    .inline-progress-handle {
+        width: 18px;
+        height: 18px;
+        border-width: 2px;
+        min-width: 18px;
+        min-height: 18px;
+    }
+    
+    .progress-percentage {
+        font-size: 0.75rem;
+        min-width: 32px;
+        padding: 1px 4px;
+    }
+    
+    .todo-times {
+        min-width: 60px;
+    }
+    
+    .todo-time {
+        font-size: 0.7rem;
+    }
+    
+    .delete-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 14px;
+    }
+    
+    .progress-container {
+        gap: 8px;
+        margin-top: 2px;
+    }
+    
+    .progress-bar {
+        height: 20px;
+        border-radius: 10px;
+        border-width: 1px;
+    }
+    
+    .progress-handle {
+        width: 16px;
+        height: 16px;
+        border-width: 2px;
+    }
+    
+    .progress-text {
+        font-size: 0.8rem;
+        min-width: 32px;
+        padding: 2px 6px;
+    }
+}
+
+/* 深色模式支持 */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --dark-color: #ffffff;
+        --light-color: #2a2a2a;
+        --border-color: #404040;
+    }
+    
+    .todo-form,
+    .todo-list-container {
+        background: #1e1e1e;
+        color: white;
+    }
+    
+    .todo-item {
+        background: #1e1e1e;
+        border-bottom-color: #404040;
+    }
+    
+    .todo-item:hover {
+        background: #2a2a2a;
+    }
+    
+    .todo-stats {
+        background: #2a2a2a;
+        color: white;
+    }
+    
+    #todo-input {
+        background: #2a2a2a;
+        color: white;
+        border-color: #404040;
+    }
+    
+    .progress-bar {
+        background: #404040;
+        border-color: #555;
+    }
+    
+    .progress-handle {
+        background: #2a2a2a;
+        border-color: var(--primary-color);
+    }
+    
+    .progress-text {
+        background: rgba(33, 150, 243, 0.2);
+        border-color: rgba(33, 150, 243, 0.3);
+    }
+    
+    .progress-percentage {
+        background: rgba(33, 150, 243, 0.2);
+        border-color: rgba(33, 150, 243, 0.3);
+    }
+    
+    .inline-progress-bar {
+        background: #404040;
+        border-color: #555;
+    }
+    
+    .inline-progress-handle {
+        background: #2a2a2a;
+        border-color: var(--primary-color);
+    }
+}

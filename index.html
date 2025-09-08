@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>todo</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="一个支持离线使用的待办事项应用">
+    <meta name="theme-color" content="#2196F3">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="todo">
+    
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📝 todo</h1>
+            <div class="offline-indicator" id="offline-indicator">
+                <span>🔴 离线模式</span>
+            </div>
+        </header>
+
+        <main>
+            <!-- 添加任务表单 -->
+            <form id="todo-form" class="todo-form">
+                <input 
+                    type="text" 
+                    id="todo-input" 
+                    placeholder="输入新的任务..." 
+                    required
+                    autocomplete="off"
+                >
+                <button type="submit" id="add-btn">添加</button>
+            </form>
+
+            <!-- 任务列表 -->
+            <div class="todo-list-container">
+                <div class="todo-stats">
+                    <span id="total-tasks">总任务: 0</span>
+                    <span id="completed-tasks">已完成: 0</span>
+                </div>
+                
+                <ul id="todo-list" class="todo-list">
+                    <!-- 任务项将通过 JavaScript 动态添加 -->
+                </ul>
+                
+                <div class="empty-state" id="empty-state">
+                    <p>🎉 暂无任务，添加一个新任务开始吧！</p>
+                </div>
+            </div>
+
+            <!-- 操作按钮 -->
+            <div class="actions">
+                <button id="clear-completed" class="btn-secondary">清除已完成</button>
+                <button id="clear-all" class="btn-danger">清除所有</button>
+            </div>
+        </main>
+
+        <footer>
+            <p>💡 此应用支持离线使用</p>
+            <div class="install-prompt" id="install-prompt">
+                <button id="install-btn">📱 安装应用</button>
+            </div>
+            <div style="margin-top: 10px;">
+                <a href="clear-cache.html" style="color: rgba(255,255,255,0.7); font-size: 0.8rem; text-decoration: none;">🔧 清除缓存</a>
+            </div>
+        </footer>
+    </div>
+
+    <!-- PWA Install Toast -->
+    <div id="install-toast" class="toast">
+        <p>🎉 应用已成功安装！</p>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>

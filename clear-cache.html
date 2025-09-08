@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>清除缓存 - todo</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .method {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 4px solid #4CAF50;
+        }
+        .method h3 {
+            margin-top: 0;
+            color: #4CAF50;
+        }
+        .steps {
+            margin: 15px 0;
+        }
+        .steps li {
+            margin: 8px 0;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 10px 10px 0;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 6px;
+            display: none;
+        }
+        .status.success {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid #4CAF50;
+            color: #4CAF50;
+        }
+        .status.error {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid #f44336;
+            color: #f44336;
+        }
+        .back-link {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .back-link a {
+            color: white;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 6px;
+            transition: background 0.3s;
+        }
+        .back-link a:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 清除缓存工具</h1>
+        
+        <div class="method">
+            <h3>方法一：自动清除缓存</h3>
+            <p>点击按钮自动清除所有 Service Worker 缓存：</p>
+            <button onclick="clearAllCaches()">清除所有缓存</button>
+            <button onclick="unregisterServiceWorker()">注销 Service Worker</button>
+            <div id="auto-status" class="status"></div>
+        </div>
+
+        <div class="method">
+            <h3>方法二：手动清除缓存（推荐）</h3>
+            <ol class="steps">
+                <li>按 <strong>F12</strong> 或右键点击"检查元素"打开开发者工具</li>
+                <li>点击 <strong>Application</strong>（应用程序）标签页</li>
+                <li>在左侧找到 <strong>Storage</strong>（存储）</li>
+                <li>点击 <strong>Clear storage</strong>（清除存储）</li>
+                <li>点击 <strong>Clear site data</strong>（清除网站数据）按钮</li>
+                <li>刷新页面</li>
+            </ol>
+        </div>
+
+        <div class="method">
+            <h3>方法三：强制刷新</h3>
+            <ol class="steps">
+                <li><strong>Windows/Linux:</strong> 按 Ctrl + Shift + R</li>
+                <li><strong>Mac:</strong> 按 Cmd + Shift + R</li>
+                <li>或者按住 Shift 键点击浏览器的刷新按钮</li>
+            </ol>
+        </div>
+
+        <div class="method">
+            <h3>方法四：无痕模式测试</h3>
+            <ol class="steps">
+                <li>打开浏览器的无痕/隐私模式</li>
+                <li>访问 <code>http://localhost:8080</code></li>
+                <li>在无痕模式下可以看到最新版本</li>
+            </ol>
+        </div>
+
+        <div class="back-link">
+            <a href="/">← 返回 todo应用</a>
+        </div>
+    </div>
+
+    <script>
+        async function clearAllCaches() {
+            const statusDiv = document.getElementById('auto-status');
+            try {
+                // 清除所有缓存
+                const cacheNames = await caches.keys();
+                await Promise.all(
+                    cacheNames.map(cacheName => caches.delete(cacheName))
+                );
+                
+                // 清除 localStorage
+                localStorage.clear();
+                
+                showStatus('success', '✅ 所有缓存已清除！请刷新页面查看最新版本。');
+                
+                // 2秒后自动跳转
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 2000);
+                
+            } catch (error) {
+                showStatus('error', '❌ 清除缓存失败：' + error.message);
+            }
+        }
+        
+        async function unregisterServiceWorker() {
+            const statusDiv = document.getElementById('auto-status');
+            try {
+                if ('serviceWorker' in navigator) {
+                    const registrations = await navigator.serviceWorker.getRegistrations();
+                    await Promise.all(
+                        registrations.map(registration => registration.unregister())
+                    );
+                    showStatus('success', '✅ Service Worker 已注销！');
+                } else {
+                    showStatus('error', '❌ 浏览器不支持 Service Worker');
+                }
+            } catch (error) {
+                showStatus('error', '❌ 注销失败：' + error.message);
+            }
+        }
+        
+        function showStatus(type, message) {
+            const statusDiv = document.getElementById('auto-status');
+            statusDiv.className = `status ${type}`;
+            statusDiv.textContent = message;
+            statusDiv.style.display = 'block';
+        }
+        
+        // 检查当前缓存状态
+        window.addEventListener('load', async () => {
+            if ('caches' in window) {
+                const cacheNames = await caches.keys();
+                console.log('当前缓存：', cacheNames);
+            }
+        });
+    </script>
+</body>
+</html>
