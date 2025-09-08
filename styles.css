@@ -354,6 +354,8 @@ main {
     overflow: hidden;
     text-overflow: ellipsis;
     width: 100%;
+    /* 强制设置文本颜色为深色 */
+    color: #333333 !important;
 }
 
 /* 内联进度条样式 */
@@ -427,7 +429,7 @@ main {
 
 .todo-item.completed .todo-text {
     text-decoration: line-through;
-    color: #888;
+    color: #888 !important;
 }
 
 /* 移动端已完成任务样式 */
@@ -1107,34 +1109,42 @@ footer {
         border-color: #e0e0e0 !important;
     }
     
+    /* 强制设置任务文本颜色 */
+    .todo-text {
+        color: #333333 !important;
+    }
+    
+    /* 强制设置进度条为浅色背景 */
     .progress-bar {
-        background: #404040;
-        border-color: #555;
+        background: #f5f5f5 !important;
+        border-color: #e0e0e0 !important;
     }
     
     .progress-handle {
-        background: #2a2a2a;
-        border-color: var(--primary-color);
+        background: #ffffff !important;
+        border-color: var(--primary-color) !important;
     }
     
     .progress-text {
-        background: rgba(33, 150, 243, 0.2);
-        border-color: rgba(33, 150, 243, 0.3);
+        background: rgba(33, 150, 243, 0.1) !important;
+        border-color: rgba(33, 150, 243, 0.2) !important;
+        color: var(--primary-color) !important;
     }
     
     .progress-percentage {
-        background: rgba(33, 150, 243, 0.2);
-        border-color: rgba(33, 150, 243, 0.3);
+        background: rgba(33, 150, 243, 0.1) !important;
+        border-color: rgba(33, 150, 243, 0.2) !important;
+        color: var(--primary-color) !important;
     }
     
     .inline-progress-bar {
-        background: #404040;
-        border-color: #555;
+        background: #f5f5f5 !important;
+        border-color: #e0e0e0 !important;
     }
     
     .inline-progress-handle {
-        background: #2a2a2a;
-        border-color: var(--primary-color);
+        background: #ffffff !important;
+        border-color: var(--primary-color) !important;
     }
 }
 
