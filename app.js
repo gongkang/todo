@@ -415,7 +415,8 @@ class TodoApp {
             this.installPrompt.classList.remove('hidden');
         });
         
-        this.installBtn.addEventListener('click', async () => {
+        this.installBtn.addEventListener('click', async (e) => {
+            e.preventDefault(); // 阻止链接默认行为
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 const { outcome } = await deferredPrompt.userChoice;
