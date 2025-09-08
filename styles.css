@@ -1,8 +1,39 @@
+/* 强制消除所有默认边界 */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    border: none;
+}
+
 /* CSS Reset */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+/* 完全消除视觉边界 */
+html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 100%;
+    /* 从深紫色到浅蓝色的优雅渐变，与浏览器标签栏融合 */
+    background: linear-gradient(180deg, #764ba2 0%, #667eea 70%, #bbdefb 100%) !important;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    overflow-x: hidden;
+    border: none !important;
+    outline: none !important;
+    /* 隐藏所有滚动条 */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+}
+
+/* Webkit浏览器隐藏滚动条 */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    display: none;
 }
 
 /* 根变量定义 */
@@ -26,19 +57,28 @@
 /* 基础样式 */
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
     color: var(--dark-color);
     line-height: 1.6;
+    /* 确保与浏览器窗口完全融合 */
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    width: 100%;
 }
 
 .container {
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
-    min-height: 100vh;
+    /* 固定容器高度，避免页面拉长 */
+    height: 100vh;
     display: flex;
     flex-direction: column;
+    /* 完全透明背景，无边界 */
+    background: transparent;
+    border: none;
+    outline: none;
+    position: relative;
 }
 
 /* 头部样式 */
@@ -151,9 +191,17 @@ main {
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
     overflow: hidden;
-    flex: 1;
+    /* 固定高度的等高模式，避免页面拉长 */
+    height: 500px;
     display: flex;
     flex-direction: column;
+    /* 隐藏滚动条 */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+}
+
+.todo-list-container::-webkit-scrollbar {
+    display: none;
 }
 
 /* 统计信息 */
@@ -174,7 +222,16 @@ main {
     list-style: none;
     flex: 1;
     overflow-y: auto;
-    max-height: 400px;
+    /* 移除最大高度限制，让其充满容器 */
+    min-height: 0; /* 确保 flex 子项能正常缩放 */
+    /* 隐藏滚动条但保持滚动功能 */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+}
+
+/* Webkit浏览器隐藏滚动条 */
+.todo-list::-webkit-scrollbar {
+    display: none;
 }
 
 .todo-item {
@@ -790,6 +847,11 @@ footer {
         padding: 15px;
     }
     
+    /* 移动端调整任务列表高度 */
+    .todo-list-container {
+        height: 400px;
+    }
+    
     header h1 {
         font-size: 2rem;
     }
@@ -892,6 +954,11 @@ footer {
 @media (max-width: 480px) {
     .container {
         padding: 10px;
+    }
+    
+    /* 小屏幕进一步调整高度 */
+    .todo-list-container {
+        height: 350px;
     }
     
     header h1 {
@@ -1056,5 +1123,76 @@ footer {
     .inline-progress-handle {
         background: #2a2a2a;
         border-color: var(--primary-color);
+    }
+}
+
+/* iOS 设备特殊适配 */
+@supports (-webkit-touch-callout: none) {
+    /* iOS 状态栏和灵动岛区域适配 */
+    html {
+        background: linear-gradient(180deg, #764ba2 0%, #667eea 70%, #bbdefb 100%);
+        background-attachment: fixed;
+    }
+    
+    body {
+        /* 使用 env() 确保内容不被灵动岛遮挡 */
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+        background: linear-gradient(180deg, #764ba2 0%, #667eea 70%, #bbdefb 100%);
+        background-attachment: fixed;
+    }
+    
+    /* 确保状态栏区域颜色一致 */
+    .container {
+        /* 保持透明背景 */
+        background: transparent;
+        border-radius: 0;
+    }
+    
+    /* iPhone 16 Dynamic Island 特殊优化 */
+    @media screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) {
+        header {
+            padding-top: 20px;
+        }
+    }
+    
+    /* iPhone 16 Plus Dynamic Island 特殊优化 */
+    @media screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) {
+        header {
+            padding-top: 20px;
+        }
+    }
+    
+    /* iPhone 16 Pro Dynamic Island 特殊优化 */
+    @media screen and (device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) {
+        header {
+            padding-top: 20px;
+        }
+    }
+    
+    /* iPhone 16 Pro Max Dynamic Island 特殊优化 */
+    @media screen and (device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) {
+        header {
+            padding-top: 20px;
+        }
+    }
+}
+
+/* PWA 全屏模式下的适配 */
+@media all and (display-mode: standalone) {
+    html {
+        background: linear-gradient(180deg, #764ba2 0%, #667eea 70%, #bbdefb 100%);
+        background-attachment: fixed;
+    }
+    
+    body {
+        padding-top: env(safe-area-inset-top);
+        background: linear-gradient(180deg, #764ba2 0%, #667eea 70%, #bbdefb 100%);
+        background-attachment: fixed;
+    }
+    
+    .container {
+        padding-top: 0;
+        background: transparent;
     }
 }

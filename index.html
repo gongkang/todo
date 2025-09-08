@@ -1,16 +1,20 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" style="margin:0;padding:0;background:linear-gradient(180deg, #764ba2 0%, #667eea 70%, #bbdefb 100%);">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>todo</title>
     
     <!-- PWA Meta Tags -->
     <meta name="description" content="一个支持离线使用的待办事项应用">
-    <meta name="theme-color" content="#2196F3">
+    <meta name="theme-color" content="#764ba2">
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#764ba2">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="todo">
+    <!-- iOS 16+ Dynamic Island 优化 -->
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
     
     <!-- Web App Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -22,7 +26,7 @@
     <!-- CSS -->
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body style="margin:0;padding:0;background:linear-gradient(180deg, #764ba2 0%, #667eea 70%, #bbdefb 100%);background-attachment:fixed;">
     <div class="container">
         <header>
             <h1>📝 todo</h1>
